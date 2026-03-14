@@ -4,21 +4,9 @@ from random import random
 from Matrix import *
 from Utils import *
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("n", type=int, help="The number of polynomial bases")
-    parser.add_argument("reg_lambda",
-                        type=int,
-                        help="only for LSE and Steepest descent cases")
-    parser.add_argument(
-        "filepath",
-        type=str,
-        help="The path and name of a file which consists of data points")
-    arg = parser.parse_args()
 
-    points = readpts(arg.filepath)
-
-    A = makeA(arg.n, points)
+def newtonLSE(n_coef, points):
+    A = makeA(n_coef, points)
     b = makeB(points)
 
     A_T = A.transpose()
@@ -44,6 +32,24 @@ if __name__ == "__main__":
             break
 
         x = new_x
+    return x
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("n", type=int, help="The number of polynomial bases")
+    parser.add_argument("reg_lambda",
+                        type=int,
+                        help="only for LSE and Steepest descent cases")
+    parser.add_argument(
+        "filepath",
+        type=str,
+        help="The path and name of a file which consists of data points")
+    arg = parser.parse_args()
+
+    points = readpts(arg.filepath)
+
+    x = newtonLSE(arg.n, points)
 
     plotPolynomial(points, x)
 
